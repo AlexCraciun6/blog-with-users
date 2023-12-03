@@ -9,8 +9,11 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 import os
+import smtplib
+
+import forms
 # Import your forms from the forms.py
-from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
+from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm
 
 '''
 Make sure the required packages are installed: 
@@ -257,9 +260,27 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=['POST', 'GET'])
 def contact():
-    return render_template("contact.html")
+    form = ContactForm()
+    if form.validate_on_submit():
+
+        msg = f"Subject:Contact\n\nName: {form.name.data}\n" \
+              f"Email: {form.email.data}\n" \
+              f"Message: {form.message.data}"
+        my_email = "test.python.alex00@gmail.com"
+        password = "zacsihnyludalsbc"
+
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+            connection.starttls()
+            connection.login(user=my_email, password=password)
+            connection.sendmail(from_addr=my_email,
+                                to_addrs="alexcraciun03@gmail.com",
+                                msg=msg)
+
+        return redirect(url_for('get_all_posts'))
+    else:
+        return render_template("contact.html", form=form)
 
 
 if __name__ == "__main__":
