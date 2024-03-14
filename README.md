@@ -18,7 +18,7 @@ This blog is a Flask-based web application designed for creating and managing bl
 
 ## Features
 
-Your Web App Name incorporates a range of impressive features to provide a comprehensive and user-friendly experience.
+The application incorporates a range of impressive features to provide a comprehensive and user-friendly experience.
 
 - **User Authentication and Security**: User passwords are encrypted using Werkzeug, providing a secure authentication process. User data, including email, password, and name, is stored and managed in a relational database using SQLAlchemy.
 
